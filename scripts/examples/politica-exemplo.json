@@ -1,0 +1,120 @@
+{
+  "empresa": {
+    "nome": "Empresa XYZ S.A.",
+    "logo_path": "",
+    "elaborado_por": "Auditoria Interna",
+    "revisado_por": "Jurídico / Compliance"
+  },
+
+  "metadados": {
+    "titulo_politica": "POLÍTICA DE GESTÃO DE ACESSOS",
+    "codigo": "POL-UAM-001",
+    "versao": "1.0",
+    "data_vigencia": "2025-05-01",
+    "area_proprietaria": "Tecnologia da Informação",
+    "aprovador": "Diretor de TI",
+    "periodicidade_revisao": "Anual",
+    "historico_revisoes": [
+      {
+        "versao": "1.0",
+        "data": "2025-04-25",
+        "descricao": "Versão inicial",
+        "aprovador": "Diretor de TI"
+      }
+    ]
+  },
+
+  "conteudo": {
+    "objetivo": "Estabelecer diretrizes para concessão, revisão, modificação e revogação de acessos a sistemas e informações da empresa, assegurando que os acessos sejam concedidos com base no princípio do menor privilégio e na necessidade estrita de negócio, prevenindo acessos não autorizados e conflitos de segregação de funções.",
+
+    "escopo": {
+      "aplicavel_a": "Todos os colaboradores, prestadores de serviço, estagiários e terceiros com acesso a sistemas, aplicações, bases de dados ou infraestrutura da Empresa XYZ S.A.",
+      "excluido": "Acessos físicos a instalações — cobertos pela Política de Segurança Física (POL-SEC-002)."
+    },
+
+    "definicoes": [
+      {
+        "termo": "Acesso",
+        "definicao": "Permissão concedida a um usuário para visualizar, incluir, alterar ou excluir informações em sistemas ou ambientes da empresa."
+      },
+      {
+        "termo": "Segregação de Funções (SoD)",
+        "definicao": "Princípio pelo qual atividades incompatíveis — como autorizar, executar, registrar e revisar uma mesma transação — devem ser realizadas por usuários distintos."
+      },
+      {
+        "termo": "User Access Review (UAR)",
+        "definicao": "Revisão periódica e formal dos acessos concedidos, com o objetivo de identificar e revogar acessos excessivos, desnecessários ou incompatíveis."
+      },
+      {
+        "termo": "Menor Privilégio",
+        "definicao": "Princípio pelo qual cada usuário recebe somente os acessos estritamente necessários ao exercício de suas funções."
+      }
+    ],
+
+    "diretrizes": [
+      {
+        "titulo": "Concessão de Acessos",
+        "corpo": "Todo acesso a sistemas críticos deve ser formalmente solicitado, justificado e aprovado antes da ativação.",
+        "itens": [
+          "A solicitação deve ser feita pelo gestor direto do usuário via sistema de chamados.",
+          "O perfil concedido deve respeitar o princípio do menor privilégio.",
+          "Antes da ativação, TI deve verificar conflitos de SoD com os perfis existentes do usuário.",
+          "Acessos de administrador ou privilegiado exigem aprovação adicional da área de Segurança da Informação."
+        ]
+      },
+      {
+        "titulo": "Revisão Periódica (User Access Review)",
+        "corpo": "Os acessos concedidos devem ser revisados semestralmente por cada gestor de área.",
+        "itens": [
+          "TI disponibilizará relatório de acessos por área com 30 dias de antecedência.",
+          "Acessos não confirmados pelo gestor devem ser revogados no prazo de 15 dias.",
+          "A revisão deve incluir cruzamento de perfis incompatíveis (SoD).",
+          "Evidência da revisão deve ser arquivada por no mínimo 5 anos."
+        ]
+      },
+      {
+        "titulo": "Revogação de Acessos",
+        "corpo": "O desligamento ou mudança de função de um colaborador deve resultar em revisão imediata de acessos.",
+        "itens": [
+          "No dia do desligamento, RH notifica TI para bloqueio imediato de todos os acessos.",
+          "Em caso de mudança de função, acessos anteriores devem ser revogados em até 5 dias úteis.",
+          "Acessos de prestadores de serviço devem ser revogados ao término do contrato."
+        ]
+      }
+    ],
+
+    "responsabilidades": [
+      {
+        "papel": "Gestor direto",
+        "responsabilidade": "Solicitar e aprovar acessos dos colaboradores; conduzir a User Access Review semestral; notificar TI em caso de desligamento ou mudança de função."
+      },
+      {
+        "papel": "Tecnologia da Informação",
+        "responsabilidade": "Executar concessão, modificação e revogação de acessos; verificar SoD antes da ativação; emitir relatório de acessos para UAR; manter log de acessos por 5 anos."
+      },
+      {
+        "papel": "Segurança da Informação",
+        "responsabilidade": "Aprovar acessos privilegiados; monitorar uso de contas de emergência e super users; reportar anomalias de acesso à Auditoria Interna."
+      },
+      {
+        "papel": "Auditoria Interna",
+        "responsabilidade": "Revisar independentemente os resultados da UAR; testar a efetividade dos controles de acesso; reportar achados ao Comitê de Auditoria."
+      },
+      {
+        "papel": "Recursos Humanos",
+        "responsabilidade": "Comunicar TI sobre admissões, desligamentos e mudanças de função no prazo definido nesta política."
+      }
+    ],
+
+    "penalidades": "O descumprimento desta política sujeitará o infrator a medidas disciplinares previstas no Código de Conduta da empresa, podendo incluir advertência, suspensão ou rescisão contratual por justa causa, sem prejuízo das responsabilidades civis e penais cabíveis.",
+
+    "referencias": [
+      "POL-SEC-001 — Política de Segurança da Informação",
+      "POL-COD-001 — Código de Conduta e Ética",
+      "ISO/IEC 27001:2022 — Controle A.8.2 (Direitos de acesso privilegiado)",
+      "LGPD — Lei nº 13.709/2018, Art. 46 (Medidas de segurança)"
+    ],
+
+    "vigencia": "Esta política entra em vigor na data de sua aprovação e permanece válida até ser substituída por versão posterior. Revisões devem ocorrer anualmente ou sempre que houver alteração relevante nos sistemas, estrutura organizacional ou regulamentação aplicável."
+  }
+}

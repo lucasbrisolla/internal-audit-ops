@@ -1,0 +1,577 @@
+{
+  "metadata": {
+    "schema_version": "1.0.0",
+    "generated_at_utc": "2026-04-24T00:00:00Z",
+    "source": "context/master-lists/sod-matrix.md",
+    "scope": "auditoria interna",
+    "total_conflicts": 35,
+    "criticality_criteria": {
+      "Alta": "conflito viabiliza fraude ou erro material sem detecção — uma pessoa controla o ciclo inteiro",
+      "Média": "conflito aumenta risco mas não viabiliza fraude isolada — requer cumplicidade ou acesso adicional"
+    }
+  },
+  "top_conflicts": [
+    {
+      "conflict": "Cadastra fornecedor + aprova pagamento",
+      "process_code": "P2P",
+      "sod_id": "SOD-P2P-001",
+      "why_critical": "Ciclo completo de fraude com fornecedor fictício"
+    },
+    {
+      "conflict": "Aprova + executa remessa bancária",
+      "process_code": "P2P",
+      "sod_id": "SOD-P2P-004",
+      "why_critical": "Desvio sem segundo olhar"
+    },
+    {
+      "conflict": "Altera dados bancários + processa folha",
+      "process_code": "H2R",
+      "sod_id": "SOD-H2R-002",
+      "why_critical": "Ghost employee ou redirecionamento de salário"
+    },
+    {
+      "conflict": "Cadastra funcionário + processa folha",
+      "process_code": "H2R",
+      "sod_id": "SOD-H2R-001",
+      "why_critical": "Clássico de ghost employee"
+    },
+    {
+      "conflict": "Prepara + aprova lançamento manual",
+      "process_code": "RTR",
+      "sod_id": "SOD-RTR-001",
+      "why_critical": "Manipulação de fechamento sem detecção"
+    },
+    {
+      "conflict": "Registra + baixa recebível",
+      "process_code": "OTC",
+      "sod_id": "SOD-OTC-004",
+      "why_critical": "Desvio de recebimento sem rastro"
+    },
+    {
+      "conflict": "Administra usuários + revisa acessos",
+      "process_code": "UAM",
+      "sod_id": "SOD-UAM-003",
+      "why_critical": "SoD sobre o próprio controlador de SoD"
+    },
+    {
+      "conflict": "Super user + monitoramento de privilegiados",
+      "process_code": "UAM",
+      "sod_id": "SOD-UAM-005",
+      "why_critical": "Conflito que anula todos os outros controles"
+    }
+  ],
+  "items": [
+    {
+      "id": "SOD-P2P-001",
+      "process_code": "P2P",
+      "process_name": "Procure-to-Pay",
+      "function_a": "Cadastro de fornecedor",
+      "function_b": "Aprovação de pagamento",
+      "conflict_risk": "Cadastra fornecedor fictício e aprova pagamento",
+      "criticality": "Alta",
+      "systems": [
+        "ERP (mestre de fornecedores",
+        "contas a pagar)"
+      ],
+      "compensatory_controls": "Revisão independente de novos fornecedores; aprovação de pagamento por alçada separada",
+      "source_file": "context/master-lists/sod-matrix.md"
+    },
+    {
+      "id": "SOD-P2P-002",
+      "process_code": "P2P",
+      "process_name": "Procure-to-Pay",
+      "function_a": "Cadastro de fornecedor",
+      "function_b": "Emissão de ordem de compra",
+      "conflict_risk": "Direciona compra para fornecedor criado por si mesmo",
+      "criticality": "Alta",
+      "systems": [
+        "ERP"
+      ],
+      "compensatory_controls": "Aprovação de OC por gestor independente do cadastro",
+      "source_file": "context/master-lists/sod-matrix.md"
+    },
+    {
+      "id": "SOD-P2P-003",
+      "process_code": "P2P",
+      "process_name": "Procure-to-Pay",
+      "function_a": "Aprovação de OC",
+      "function_b": "Recebimento de mercadoria",
+      "conflict_risk": "Aprova compra e confirma recebimento sem verificação real",
+      "criticality": "Alta",
+      "systems": [
+        "ERP (módulo compras",
+        "recebimento)"
+      ],
+      "compensatory_controls": "Recebimento físico documentado por área operacional independente",
+      "source_file": "context/master-lists/sod-matrix.md"
+    },
+    {
+      "id": "SOD-P2P-004",
+      "process_code": "P2P",
+      "process_name": "Procure-to-Pay",
+      "function_a": "Aprovação de pagamento",
+      "function_b": "Execução de remessa bancária",
+      "conflict_risk": "Aprova e executa pagamento — ciclo financeiro inteiro",
+      "criticality": "Alta",
+      "systems": [
+        "ERP",
+        "internet banking",
+        "sistema de pagamentos"
+      ],
+      "compensatory_controls": "Segundo autorizador na remessa; token em poder de pessoa diferente",
+      "source_file": "context/master-lists/sod-matrix.md"
+    },
+    {
+      "id": "SOD-P2P-005",
+      "process_code": "P2P",
+      "process_name": "Procure-to-Pay",
+      "function_a": "Lançamento de NF de fornecedor",
+      "function_b": "Aprovação de pagamento",
+      "conflict_risk": "Lança NF e aprova pagamento correspondente",
+      "criticality": "Alta",
+      "systems": [
+        "ERP (AP)"
+      ],
+      "compensatory_controls": "Aprovação de pagamento por pessoa que não lançou a NF",
+      "source_file": "context/master-lists/sod-matrix.md"
+    },
+    {
+      "id": "SOD-P2P-006",
+      "process_code": "P2P",
+      "process_name": "Procure-to-Pay",
+      "function_a": "Solicitação de compra",
+      "function_b": "Aprovação de OC",
+      "conflict_risk": "Solicita e aprova a própria compra",
+      "criticality": "Média",
+      "systems": [
+        "ERP"
+      ],
+      "compensatory_controls": "Aprovação por gestor acima do solicitante; threshold para autoapprovação zero",
+      "source_file": "context/master-lists/sod-matrix.md"
+    },
+    {
+      "id": "SOD-P2P-007",
+      "process_code": "P2P",
+      "process_name": "Procure-to-Pay",
+      "function_a": "Alteração de dados bancários de fornecedor",
+      "function_b": "Aprovação de pagamento",
+      "conflict_risk": "Redireciona conta e aprova remessa",
+      "criticality": "Alta",
+      "systems": [
+        "ERP (mestre fornecedores)",
+        "sistema bancário"
+      ],
+      "compensatory_controls": "Dupla aprovação para alteração de dados bancários; notificação automática ao fornecedor",
+      "source_file": "context/master-lists/sod-matrix.md"
+    },
+    {
+      "id": "SOD-OTC-001",
+      "process_code": "OTC",
+      "process_name": "Order-to-Cash",
+      "function_a": "Cadastro de cliente",
+      "function_b": "Aprovação de pedido",
+      "conflict_risk": "Cadastra cliente fictício e aprova pedido para desvio",
+      "criticality": "Alta",
+      "systems": [
+        "ERP",
+        "CRM"
+      ],
+      "compensatory_controls": "Segregação no sistema; aprovação de pedido por área comercial independente do cadastro",
+      "source_file": "context/master-lists/sod-matrix.md"
+    },
+    {
+      "id": "SOD-OTC-002",
+      "process_code": "OTC",
+      "process_name": "Order-to-Cash",
+      "function_a": "Definição de limite de crédito",
+      "function_b": "Aprovação de pedido acima do limite",
+      "conflict_risk": "Ignora critério de crédito que ele mesmo definiu",
+      "criticality": "Alta",
+      "systems": [
+        "ERP",
+        "sistema de crédito"
+      ],
+      "compensatory_controls": "Limite de crédito definido por área de risco independente do comercial",
+      "source_file": "context/master-lists/sod-matrix.md"
+    },
+    {
+      "id": "SOD-OTC-003",
+      "process_code": "OTC",
+      "process_name": "Order-to-Cash",
+      "function_a": "Registro de entrega",
+      "function_b": "Emissão de nota fiscal",
+      "conflict_risk": "Confirma entrega fictícia e emite NF correspondente",
+      "criticality": "Alta",
+      "systems": [
+        "ERP",
+        "sistema fiscal (NF-e)"
+      ],
+      "compensatory_controls": "Entrega confirmada por romaneio de transportadora antes de NF ser emitida",
+      "source_file": "context/master-lists/sod-matrix.md"
+    },
+    {
+      "id": "SOD-OTC-004",
+      "process_code": "OTC",
+      "process_name": "Order-to-Cash",
+      "function_a": "Emissão de nota fiscal",
+      "function_b": "Baixa de recebível",
+      "conflict_risk": "Emite NF e baixa título sem recebimento real",
+      "criticality": "Alta",
+      "systems": [
+        "ERP (AR)"
+      ],
+      "compensatory_controls": "Conciliação bancária independente; baixa requer identificação de recebimento bancário",
+      "source_file": "context/master-lists/sod-matrix.md"
+    },
+    {
+      "id": "SOD-OTC-005",
+      "process_code": "OTC",
+      "process_name": "Order-to-Cash",
+      "function_a": "Recebimento de pagamento",
+      "function_b": "Baixa de título no sistema",
+      "conflict_risk": "Desvia recebimento e não registra — ou lança para conta errada",
+      "criticality": "Alta",
+      "systems": [
+        "ERP (AR)",
+        "conta bancária"
+      ],
+      "compensatory_controls": "Conciliação bancária diária por pessoa independente de quem faz baixa",
+      "source_file": "context/master-lists/sod-matrix.md"
+    },
+    {
+      "id": "SOD-OTC-006",
+      "process_code": "OTC",
+      "process_name": "Order-to-Cash",
+      "function_a": "Concessão de desconto",
+      "function_b": "Aprovação de desconto",
+      "conflict_risk": "Aprova desconto acima da própria alçada",
+      "criticality": "Alta",
+      "systems": [
+        "ERP",
+        "sistema comercial"
+      ],
+      "compensatory_controls": "Tabela de alçadas sistêmica que bloqueia aprovação pelo próprio concessor",
+      "source_file": "context/master-lists/sod-matrix.md"
+    },
+    {
+      "id": "SOD-OTC-007",
+      "process_code": "OTC",
+      "process_name": "Order-to-Cash",
+      "function_a": "Renegociação de dívida",
+      "function_b": "Aprovação de write-off",
+      "conflict_risk": "Renegocia condições e dá baixa como irrecuperável",
+      "criticality": "Alta",
+      "systems": [
+        "ERP (AR)"
+      ],
+      "compensatory_controls": "Aprovação de write-off por alçada separada; revisão periódica pelo CFO",
+      "source_file": "context/master-lists/sod-matrix.md"
+    },
+    {
+      "id": "SOD-H2R-001",
+      "process_code": "H2R",
+      "process_name": "Hire-to-Retire",
+      "function_a": "Cadastro de funcionário",
+      "function_b": "Processamento de folha",
+      "conflict_risk": "Cadastra funcionário fictício e processa pagamento",
+      "criticality": "Alta",
+      "systems": [
+        "Sistema de RH",
+        "folha (ADP, SAP HCM, Datasul)"
+      ],
+      "compensatory_controls": "Segregação sistêmica entre módulo de cadastro e processamento; relatório de novos cadastros revisado independentemente",
+      "source_file": "context/master-lists/sod-matrix.md"
+    },
+    {
+      "id": "SOD-H2R-002",
+      "process_code": "H2R",
+      "process_name": "Hire-to-Retire",
+      "function_a": "Alteração de dados bancários",
+      "function_b": "Processamento de folha",
+      "conflict_risk": "Redireciona salário e processa pagamento para conta própria",
+      "criticality": "Alta",
+      "systems": [
+        "Sistema de RH",
+        "folha"
+      ],
+      "compensatory_controls": "Dupla aprovação para alteração de dados bancários; notificação por e-mail ao funcionário titular",
+      "source_file": "context/master-lists/sod-matrix.md"
+    },
+    {
+      "id": "SOD-H2R-003",
+      "process_code": "H2R",
+      "process_name": "Hire-to-Retire",
+      "function_a": "Aprovação de horas extras",
+      "function_b": "Beneficiário das horas extras",
+      "conflict_risk": "Aprova as próprias horas extras sem supervisão",
+      "criticality": "Alta",
+      "systems": [
+        "Ponto eletrônico",
+        "sistema de RH"
+      ],
+      "compensatory_controls": "Aprovação de horas extras pelo gestor direto do beneficiário, nunca pelo próprio",
+      "source_file": "context/master-lists/sod-matrix.md"
+    },
+    {
+      "id": "SOD-H2R-004",
+      "process_code": "H2R",
+      "process_name": "Hire-to-Retire",
+      "function_a": "Cadastro de funcionário",
+      "function_b": "Aprovação de desligamento",
+      "conflict_risk": "Impede desligamento de funcionário fictício que criou",
+      "criticality": "Média",
+      "systems": [
+        "Sistema de RH"
+      ],
+      "compensatory_controls": "Desligamento aprovado por gestor e RH independentes do cadastro",
+      "source_file": "context/master-lists/sod-matrix.md"
+    },
+    {
+      "id": "SOD-H2R-005",
+      "process_code": "H2R",
+      "process_name": "Hire-to-Retire",
+      "function_a": "Preparação da folha",
+      "function_b": "Aprovação da folha",
+      "conflict_risk": "Processa e aprova folha sem revisão independente",
+      "criticality": "Alta",
+      "systems": [
+        "Sistema de folha"
+      ],
+      "compensatory_controls": "Aprovação formal da folha pelo gestor financeiro antes do pagamento",
+      "source_file": "context/master-lists/sod-matrix.md"
+    },
+    {
+      "id": "SOD-H2R-006",
+      "process_code": "H2R",
+      "process_name": "Hire-to-Retire",
+      "function_a": "Gestão de benefícios",
+      "function_b": "Elegibilidade de benefícios",
+      "conflict_risk": "Define e concede benefício a si mesmo ou a inelegíveis",
+      "criticality": "Média",
+      "systems": [
+        "Sistema de RH",
+        "operadoras"
+      ],
+      "compensatory_controls": "Lista de elegibilidade mantida por RH; revisão periódica por área independente",
+      "source_file": "context/master-lists/sod-matrix.md"
+    },
+    {
+      "id": "SOD-RTR-001",
+      "process_code": "RTR",
+      "process_name": "Record-to-Report",
+      "function_a": "Preparação de lançamento manual",
+      "function_b": "Aprovação de lançamento manual",
+      "conflict_risk": "Lança e aprova ajuste sem revisão independente",
+      "criticality": "Alta",
+      "systems": [
+        "ERP (módulo contábil)"
+      ],
+      "compensatory_controls": "Workflow de aprovação sistêmico; autoapprovação bloqueada pelo sistema",
+      "source_file": "context/master-lists/sod-matrix.md"
+    },
+    {
+      "id": "SOD-RTR-002",
+      "process_code": "RTR",
+      "process_name": "Record-to-Report",
+      "function_a": "Preparação de reconciliação",
+      "function_b": "Aprovação de reconciliação",
+      "conflict_risk": "Reconcilia e aprova sem detecção de erros ou omissões",
+      "criticality": "Alta",
+      "systems": [
+        "ERP",
+        "planilha de reconciliação"
+      ],
+      "compensatory_controls": "Aprovador diferente do preparador com acesso independente ao razão",
+      "source_file": "context/master-lists/sod-matrix.md"
+    },
+    {
+      "id": "SOD-RTR-003",
+      "process_code": "RTR",
+      "process_name": "Record-to-Report",
+      "function_a": "Elaboração das demonstrações financeiras",
+      "function_b": "Aprovação das demonstrações",
+      "conflict_risk": "Prepara e aprova o reporte sem revisão do CFO/CA",
+      "criticality": "Alta",
+      "systems": [
+        "Sistema contábil",
+        "consolidação"
+      ],
+      "compensatory_controls": "Aprovação formal pelo CFO; revisão do Comitê de Auditoria para demonstrações anuais",
+      "source_file": "context/master-lists/sod-matrix.md"
+    },
+    {
+      "id": "SOD-RTR-004",
+      "process_code": "RTR",
+      "process_name": "Record-to-Report",
+      "function_a": "Acesso de super user ao ERP",
+      "function_b": "Revisão de lançamentos manuais",
+      "conflict_risk": "Faz ajuste e revisa o próprio ajuste — ou apaga trilha",
+      "criticality": "Alta",
+      "systems": [
+        "ERP (perfil administrador)"
+      ],
+      "compensatory_controls": "Log imutável de ações de super user; revisão por auditoria interna ou TI independente",
+      "source_file": "context/master-lists/sod-matrix.md"
+    },
+    {
+      "id": "SOD-RTR-005",
+      "process_code": "RTR",
+      "process_name": "Record-to-Report",
+      "function_a": "Definição de estimativas contábeis",
+      "function_b": "Aprovação das estimativas",
+      "conflict_risk": "Define provisão ou impairment e aprova o valor",
+      "criticality": "Alta",
+      "systems": [
+        "ERP",
+        "sistema de consolidação"
+      ],
+      "compensatory_controls": "Revisão de estimativas por Controller ou auditoria interna independente da área que definiu",
+      "source_file": "context/master-lists/sod-matrix.md"
+    },
+    {
+      "id": "SOD-FA-001",
+      "process_code": "FA",
+      "process_name": "Fixed Assets",
+      "function_a": "Aprovação de CAPEX",
+      "function_b": "Recebimento físico do ativo",
+      "conflict_risk": "Aprova compra e confirma recebimento sem verificação",
+      "criticality": "Média",
+      "systems": [
+        "ERP (módulo imobilizado)"
+      ],
+      "compensatory_controls": "Recebimento confirmado por área operacional independente de quem aprovou",
+      "source_file": "context/master-lists/sod-matrix.md"
+    },
+    {
+      "id": "SOD-FA-002",
+      "process_code": "FA",
+      "process_name": "Fixed Assets",
+      "function_a": "Registro de ativo no sistema",
+      "function_b": "Aprovação de baixa do ativo",
+      "conflict_risk": "Cria ativo e também o baixa — ciclo sem verificação",
+      "criticality": "Alta",
+      "systems": [
+        "ERP (módulo imobilizado)"
+      ],
+      "compensatory_controls": "Aprovação de baixa por alçada separada do responsável pelo registro",
+      "source_file": "context/master-lists/sod-matrix.md"
+    },
+    {
+      "id": "SOD-FA-003",
+      "process_code": "FA",
+      "process_name": "Fixed Assets",
+      "function_a": "Custódia física do ativo",
+      "function_b": "Inventário físico do ativo",
+      "conflict_risk": "Conta o próprio inventário — pode ocultar desvio",
+      "criticality": "Alta",
+      "systems": [
+        "Sistema de inventário",
+        "ERP"
+      ],
+      "compensatory_controls": "Inventário conduzido por equipe independente da custódia",
+      "source_file": "context/master-lists/sod-matrix.md"
+    },
+    {
+      "id": "SOD-FA-004",
+      "process_code": "FA",
+      "process_name": "Fixed Assets",
+      "function_a": "Solicitação de alienação",
+      "function_b": "Aprovação de alienação",
+      "conflict_risk": "Propõe e aprova venda de ativo — potencial desvio de valor",
+      "criticality": "Alta",
+      "systems": [
+        "ERP (módulo imobilizado)"
+      ],
+      "compensatory_controls": "Aprovação de alienação por alçada superior com base no valor contábil",
+      "source_file": "context/master-lists/sod-matrix.md"
+    },
+    {
+      "id": "SOD-FA-005",
+      "process_code": "FA",
+      "process_name": "Fixed Assets",
+      "function_a": "Definição de vida útil / depreciação",
+      "function_b": "Aprovação dos parâmetros de depreciação",
+      "conflict_risk": "Define e valida estimativa que impacta diretamente o resultado",
+      "criticality": "Média",
+      "systems": [
+        "ERP (parâmetros do imobilizado)"
+      ],
+      "compensatory_controls": "Revisão anual de vida útil aprovada pelo Controller com base técnica documentada",
+      "source_file": "context/master-lists/sod-matrix.md"
+    },
+    {
+      "id": "SOD-UAM-001",
+      "process_code": "UAM",
+      "process_name": "User Access Management",
+      "function_a": "Solicitação de acesso",
+      "function_b": "Aprovação de acesso",
+      "conflict_risk": "Solicita e aprova o próprio acesso",
+      "criticality": "Alta",
+      "systems": [
+        "Sistema de chamados (ServiceNow, GLPI, Jira)"
+      ],
+      "compensatory_controls": "Aprovação obrigatória por gestor direto diferente do solicitante",
+      "source_file": "context/master-lists/sod-matrix.md"
+    },
+    {
+      "id": "SOD-UAM-002",
+      "process_code": "UAM",
+      "process_name": "User Access Management",
+      "function_a": "Aprovação de acesso",
+      "function_b": "Concessão técnica de acesso",
+      "conflict_risk": "Aprova e executa — sem verificação cruzada",
+      "criticality": "Média",
+      "systems": [
+        "AD",
+        "ERP",
+        "sistemas aplicativos"
+      ],
+      "compensatory_controls": "TI verifica chamado aprovado antes de conceder; log de concessão vinculado ao chamado",
+      "source_file": "context/master-lists/sod-matrix.md"
+    },
+    {
+      "id": "SOD-UAM-003",
+      "process_code": "UAM",
+      "process_name": "User Access Management",
+      "function_a": "Administração de usuários no sistema",
+      "function_b": "Revisão periódica de acessos do sistema",
+      "conflict_risk": "Cria acessos e revisa a própria lista",
+      "criticality": "Alta",
+      "systems": [
+        "AD",
+        "ERP"
+      ],
+      "compensatory_controls": "Revisão conduzida por área de GRC ou auditoria interna com extração direta do sistema",
+      "source_file": "context/master-lists/sod-matrix.md"
+    },
+    {
+      "id": "SOD-UAM-004",
+      "process_code": "UAM",
+      "process_name": "User Access Management",
+      "function_a": "Gestão de perfis de acesso (TI)",
+      "function_b": "Uso dos perfis em transações de negócio",
+      "conflict_risk": "TI com acesso irrestrito pode executar transações financeiras",
+      "criticality": "Alta",
+      "systems": [
+        "ERP (SAP, Oracle, TOTVS)"
+      ],
+      "compensatory_controls": "Perfis administrativos de TI sem permissão de execução de transações de negócio",
+      "source_file": "context/master-lists/sod-matrix.md"
+    },
+    {
+      "id": "SOD-UAM-005",
+      "process_code": "UAM",
+      "process_name": "User Access Management",
+      "function_a": "Concessão de acesso privilegiado",
+      "function_b": "Monitoramento de uso privilegiado",
+      "conflict_risk": "Concede super user e monitora o próprio uso",
+      "criticality": "Alta",
+      "systems": [
+        "ERP",
+        "AD (conta admin)"
+      ],
+      "compensatory_controls": "Log de uso de contas privilegiadas revisado por área independente (GRC, auditoria interna)",
+      "source_file": "context/master-lists/sod-matrix.md"
+    }
+  ]
+}

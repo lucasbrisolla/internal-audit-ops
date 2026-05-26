@@ -1,0 +1,770 @@
+{
+  "metadata": {
+    "schema_version": "1.0.0",
+    "generated_at_utc": "2026-04-24T00:00:00Z",
+    "source": "context/master-lists/red-flags-por-processo.md",
+    "scope": "auditoria interna",
+    "total_flags": 49,
+    "flag_types": [
+      "Valor",
+      "Frequência",
+      "Padrão",
+      "Timing"
+    ],
+    "threshold_note": "limiares são pontos de partida — calibrar conforme materialidade e características do cliente"
+  },
+  "top_flags": [
+    {
+      "red_flag": "Dados bancários de fornecedor = funcionário",
+      "processes": [
+        "P2P",
+        "H2R"
+      ],
+      "ids": [
+        "RF-P2P-001"
+      ],
+      "why_prioritize": "Sinal clássico de ghost employee + desvio de pagamento"
+    },
+    {
+      "red_flag": "Clustering abaixo do limite de aprovação",
+      "processes": [
+        "P2P"
+      ],
+      "ids": [
+        "RF-P2P-003",
+        "RF-P2P-010"
+      ],
+      "why_prioritize": "Fracionamento deliberado para evitar controle"
+    },
+    {
+      "red_flag": "Provisões que se revertem sistematicamente",
+      "processes": [
+        "RTR"
+      ],
+      "ids": [
+        "RF-RTR-003"
+      ],
+      "why_prioritize": "Manipulação de resultado entre períodos"
+    },
+    {
+      "red_flag": "Lançamentos manuais fora do horário",
+      "processes": [
+        "RTR",
+        "UAM"
+      ],
+      "ids": [
+        "RF-RTR-007",
+        "RF-UAM-002"
+      ],
+      "why_prioritize": "Override de controle sem supervisão"
+    },
+    {
+      "red_flag": "NFs concentradas no fim do período",
+      "processes": [
+        "OTC"
+      ],
+      "ids": [
+        "RF-OTC-002"
+      ],
+      "why_prioritize": "Antecipação de receita para atingir meta"
+    },
+    {
+      "red_flag": "Ex-funcionário com login após desligamento",
+      "processes": [
+        "UAM"
+      ],
+      "ids": [
+        "RF-UAM-004"
+      ],
+      "why_prioritize": "Risco de segurança + fraude potencial"
+    },
+    {
+      "red_flag": "Horas extras em funcionário sem ponto",
+      "processes": [
+        "H2R"
+      ],
+      "ids": [
+        "RF-H2R-001"
+      ],
+      "why_prioritize": "Pagamento fictício sem suporte operacional"
+    },
+    {
+      "red_flag": "CIP parada > 12 meses",
+      "processes": [
+        "FA"
+      ],
+      "ids": [
+        "RF-FA-001"
+      ],
+      "why_prioritize": "Ativo capitalizado que pode nunca entrar em uso"
+    }
+  ],
+  "items": [
+    {
+      "id": "RF-P2P-001",
+      "process_code": "P2P",
+      "process_name": "Procure-to-Pay",
+      "red_flag": "Fornecedor com dados bancários idênticos a funcionário",
+      "metric": "Cruzamento de conta bancária do mestre de fornecedores com dados bancários da folha",
+      "threshold": "Qualquer match = investigar",
+      "ipe_source": "Extrato de mestre de fornecedores + folha de pagamento",
+      "wcgw_associated": [],
+      "type": "Padrão",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-P2P-002",
+      "process_code": "P2P",
+      "process_name": "Procure-to-Pay",
+      "red_flag": "Fornecedor cadastrado e pago no mesmo dia ou semana",
+      "metric": "Diferença em dias entre data de cadastro e primeiro pagamento",
+      "threshold": "< 7 dias = alerta",
+      "ipe_source": "Mestre de fornecedores + histórico de pagamentos",
+      "wcgw_associated": [],
+      "type": "Timing",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-P2P-003",
+      "process_code": "P2P",
+      "process_name": "Procure-to-Pay",
+      "red_flag": "Pagamentos fracionados abaixo do limite de aprovação",
+      "metric": "Múltiplos pagamentos ao mesmo fornecedor no mesmo dia ou semana com valor individual abaixo do threshold",
+      "threshold": "≥ 3 pagamentos ao mesmo fornecedor no mesmo dia com soma > limite de aprovação",
+      "ipe_source": "Relatório de pagamentos por fornecedor e data",
+      "wcgw_associated": [],
+      "type": "Padrão",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-P2P-004",
+      "process_code": "P2P",
+      "process_name": "Procure-to-Pay",
+      "red_flag": "Pagamentos processados fora do horário ou em datas atípicas",
+      "metric": "Timestamp de autorização de remessa",
+      "threshold": "Fora do horário comercial (ex: antes das 7h ou após 20h) ou fins de semana / feriados",
+      "ipe_source": "Log de transações do sistema bancário",
+      "wcgw_associated": [],
+      "type": "Timing",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-P2P-005",
+      "process_code": "P2P",
+      "process_name": "Procure-to-Pay",
+      "red_flag": "Concentração excessiva em poucos fornecedores",
+      "metric": "% do volume de compras no top 5 fornecedores",
+      "threshold": "> 60% do volume em ≤ 5 fornecedores sem justificativa contratual",
+      "ipe_source": "Relatório de compras por fornecedor no período",
+      "wcgw_associated": [],
+      "type": "Padrão",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-P2P-006",
+      "process_code": "P2P",
+      "process_name": "Procure-to-Pay",
+      "red_flag": "Variação de preço por item acima do esperado",
+      "metric": "Preço médio pago por item ao mesmo fornecedor vs. períodos anteriores",
+      "threshold": "Variação > 15% sem reajuste contratual documentado",
+      "ipe_source": "Histórico de OCs e NFs por item/fornecedor",
+      "wcgw_associated": [],
+      "type": "Valor",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-P2P-007",
+      "process_code": "P2P",
+      "process_name": "Procure-to-Pay",
+      "red_flag": "NFs duplicadas — mesmo fornecedor, valor próximo, mesmo período",
+      "metric": "Duplicidade por fornecedor + valor (±5%) + período (±30 dias)",
+      "threshold": "Qualquer match = investigar",
+      "ipe_source": "Base de NFs lançadas no período",
+      "wcgw_associated": [],
+      "type": "Padrão",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-P2P-008",
+      "process_code": "P2P",
+      "process_name": "Procure-to-Pay",
+      "red_flag": "Compras diretas acima do threshold sem processo de cotação",
+      "metric": "Volume de OCs sem referência de cotação acima do valor mínimo obrigatório",
+      "threshold": "> 10% do volume de compras sem cotação quando política exige",
+      "ipe_source": "Relatório de OCs com campo de cotação vazio",
+      "wcgw_associated": [],
+      "type": "Frequência",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-P2P-009",
+      "process_code": "P2P",
+      "process_name": "Procure-to-Pay",
+      "red_flag": "Fornecedor com CNPJ inativo ou situação irregular na Receita Federal",
+      "metric": "Situação cadastral do CNPJ na data da transação",
+      "threshold": "CNPJ inapto, suspenso ou baixado = investigar",
+      "ipe_source": "Mestre de fornecedores + consulta Receita (CNPJ)",
+      "wcgw_associated": [],
+      "type": "Padrão",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-P2P-010",
+      "process_code": "P2P",
+      "process_name": "Procure-to-Pay",
+      "red_flag": "Clustering de pagamentos próximos ao limite de aprovação",
+      "metric": "Distribuição de pagamentos por faixa de valor",
+      "threshold": "Concentração anormal de pagamentos entre 90–99% do limite de aprovação",
+      "ipe_source": "Histograma de pagamentos por valor",
+      "wcgw_associated": [],
+      "type": "Padrão",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-P2P-011",
+      "process_code": "P2P",
+      "process_name": "Procure-to-Pay",
+      "red_flag": "Mesmo endereço ou telefone em múltiplos fornecedores",
+      "metric": "Cruzamento de endereço e telefone no mestre de fornecedores",
+      "threshold": "≥ 2 fornecedores com mesmo endereço ou telefone",
+      "ipe_source": "Mestre de fornecedores",
+      "wcgw_associated": [],
+      "type": "Padrão",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-OTC-001",
+      "process_code": "OTC",
+      "process_name": "Order-to-Cash",
+      "red_flag": "DSO crescente sem explicação de mix ou prazo",
+      "metric": "Days Sales Outstanding = (Contas a Receber / Receita) × dias do período",
+      "threshold": "Aumento > 10 dias vs. mesmo período do ano anterior sem alteração de política",
+      "ipe_source": "Razão de clientes + DRE do período",
+      "wcgw_associated": [
+        "OTC-034",
+        "OTC-036"
+      ],
+      "type": "Padrão",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-OTC-002",
+      "process_code": "OTC",
+      "process_name": "Order-to-Cash",
+      "red_flag": "NFs emitidas nos últimos dias do período — clustering de corte",
+      "metric": "Volume e valor de NFs emitidas nos últimos 5 dias úteis do período",
+      "threshold": "> 30% da receita mensal concentrada nos últimos 5 dias úteis",
+      "ipe_source": "Relatório de NFs por data de emissão",
+      "wcgw_associated": [
+        "OTC-014",
+        "OTC-024"
+      ],
+      "type": "Timing",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-OTC-003",
+      "process_code": "OTC",
+      "process_name": "Order-to-Cash",
+      "red_flag": "Receita crescendo enquanto volume operacional cai",
+      "metric": "Variação % da receita vs. variação % de volume (unidades, m², contratos ativos)",
+      "threshold": "Receita cresce > 10% enquanto volume cai ou estagna — sem reajuste de preço documentado",
+      "ipe_source": "DRE + dados operacionais do sistema",
+      "wcgw_associated": [
+        "OTC-027",
+        "FRA-021"
+      ],
+      "type": "Padrão",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-OTC-004",
+      "process_code": "OTC",
+      "process_name": "Order-to-Cash",
+      "red_flag": "Grandes notas de crédito ou abatimentos próximos ao fechamento",
+      "metric": "Volume e valor de notas de crédito e abatimentos nos últimos e primeiros dias do período",
+      "threshold": "Nota de crédito > 5% da NF original emitida nos últimos 3 dias úteis do período",
+      "ipe_source": "Relatório de notas de crédito por data",
+      "wcgw_associated": [
+        "OTC-025",
+        "OTC-019"
+      ],
+      "type": "Timing",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-OTC-005",
+      "process_code": "OTC",
+      "process_name": "Order-to-Cash",
+      "red_flag": "Receita revertida ou estornada no período seguinte",
+      "metric": "Valor de reversões de receita no mês M+1 referentes a NFs de M",
+      "threshold": "Reversão > 2% da receita do período",
+      "ipe_source": "Relatório de estornos por NF de origem",
+      "wcgw_associated": [
+        "OTC-032",
+        "FRA-021"
+      ],
+      "type": "Padrão",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-OTC-006",
+      "process_code": "OTC",
+      "process_name": "Order-to-Cash",
+      "red_flag": "Clientes com aging > 90 dias sem PDD proporcional",
+      "metric": "% de clientes com saldo vencido > 90 dias sobre o total de AR vs. % de PDD constituída",
+      "threshold": "PDD < 30% do saldo vencido > 90 dias (calibrar pelo histórico de perdas)",
+      "ipe_source": "Aging de clientes + razão de PDD",
+      "wcgw_associated": [
+        "OTC-034",
+        "OTC-036"
+      ],
+      "type": "Valor",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-OTC-007",
+      "process_code": "OTC",
+      "process_name": "Order-to-Cash",
+      "red_flag": "Concentração excessiva em poucos clientes",
+      "metric": "% da receita no top 5 clientes",
+      "threshold": "> 50% da receita em ≤ 3 clientes sem contrato de longo prazo documentado",
+      "ipe_source": "Relatório de receita por cliente",
+      "wcgw_associated": [
+        "OTC-040"
+      ],
+      "type": "Padrão",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-OTC-008",
+      "process_code": "OTC",
+      "process_name": "Order-to-Cash",
+      "red_flag": "Desconto concedido acima da alçada do vendedor",
+      "metric": "Desconto aplicado vs. tabela de alçadas por vendedor",
+      "threshold": "Qualquer desconto acima da alçada sem aprovação documentada do gestor",
+      "ipe_source": "Relatório de pedidos com campo de desconto + tabela de alçadas",
+      "wcgw_associated": [
+        "OTC-010"
+      ],
+      "type": "Valor",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-OTC-009",
+      "process_code": "OTC",
+      "process_name": "Order-to-Cash",
+      "red_flag": "Recebimentos em conta bancária não reconciliada",
+      "metric": "Extrato bancário de contas não incluídas na conciliação formal",
+      "threshold": "Qualquer conta com entrada de clientes fora do processo de conciliação",
+      "ipe_source": "Extrato bancário + escopo de conciliação",
+      "wcgw_associated": [
+        "OTC-045"
+      ],
+      "type": "Padrão",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-H2R-001",
+      "process_code": "H2R",
+      "process_name": "Hire-to-Retire",
+      "red_flag": "Funcionários sem registro de ponto mas com pagamento de horas extras",
+      "metric": "Funcionários com horas extras pagas mas sem registro de ponto eletrônico no período",
+      "threshold": "Qualquer ocorrência = investigar",
+      "ipe_source": "Folha de pagamento + relatório de ponto eletrônico",
+      "wcgw_associated": [],
+      "type": "Padrão",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-H2R-002",
+      "process_code": "H2R",
+      "process_name": "Hire-to-Retire",
+      "red_flag": "Horas extras concentradas em poucos funcionários",
+      "metric": "% do total de horas extras pagas concentrado nos top 10 beneficiários",
+      "threshold": "Top 10 responsáveis por > 50% do custo total de horas extras",
+      "ipe_source": "Folha de pagamento com detalhamento de horas extras por matrícula",
+      "wcgw_associated": [],
+      "type": "Frequência",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-H2R-003",
+      "process_code": "H2R",
+      "process_name": "Hire-to-Retire",
+      "red_flag": "Salário fora da faixa aprovada para o cargo",
+      "metric": "Salário individual vs. faixa salarial aprovada para o cargo/nível",
+      "threshold": "Salário > 110% do teto da faixa sem exceção documentada",
+      "ipe_source": "Folha de pagamento + tabela de faixas salariais",
+      "wcgw_associated": [],
+      "type": "Valor",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-H2R-004",
+      "process_code": "H2R",
+      "process_name": "Hire-to-Retire",
+      "red_flag": "Múltiplos funcionários com mesmos dados bancários",
+      "metric": "Cruzamento de conta bancária no cadastro de funcionários",
+      "threshold": "≥ 2 funcionários com mesma conta corrente",
+      "ipe_source": "Cadastro de funcionários (dados bancários)",
+      "wcgw_associated": [],
+      "type": "Padrão",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-H2R-005",
+      "process_code": "H2R",
+      "process_name": "Hire-to-Retire",
+      "red_flag": "Variação de folha acima do esperado sem variação de headcount",
+      "metric": "Variação % do custo total da folha vs. variação % de headcount",
+      "threshold": "Folha cresce > 5% enquanto headcount está estável ou cai",
+      "ipe_source": "Folha mensal + relatório de headcount",
+      "wcgw_associated": [],
+      "type": "Padrão",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-H2R-006",
+      "process_code": "H2R",
+      "process_name": "Hire-to-Retire",
+      "red_flag": "Funcionários admitidos e desligados em prazo muito curto",
+      "metric": "Tempo de permanência (dias entre admissão e desligamento)",
+      "threshold": "Permanência < 30 dias com rescisão calculada",
+      "ipe_source": "Cadastro de RH + histórico de desligamentos",
+      "wcgw_associated": [],
+      "type": "Padrão",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-H2R-007",
+      "process_code": "H2R",
+      "process_name": "Hire-to-Retire",
+      "red_flag": "Ex-funcionários ainda recebendo benefícios",
+      "metric": "Cruzamento de beneficiários ativos com lista de desligados",
+      "threshold": "Qualquer ex-funcionário com benefício ativo após data de desligamento",
+      "ipe_source": "Lista de beneficiários (plano de saúde, VR, VT) + registro de desligamentos",
+      "wcgw_associated": [],
+      "type": "Padrão",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-H2R-008",
+      "process_code": "H2R",
+      "process_name": "Hire-to-Retire",
+      "red_flag": "Aumento salarial acima do reajuste coletivo sem aprovação documentada",
+      "metric": "Variação salarial individual vs. índice de reajuste do período (ACT/CCT)",
+      "threshold": "Reajuste individual > índice coletivo + 5% sem exceção documentada",
+      "ipe_source": "Folha comparativa mês a mês por matrícula",
+      "wcgw_associated": [],
+      "type": "Valor",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-H2R-009",
+      "process_code": "H2R",
+      "process_name": "Hire-to-Retire",
+      "red_flag": "Funcionários com endereço igual ao de gestor direto",
+      "metric": "Cruzamento de endereço residencial no cadastro",
+      "threshold": "Qualquer funcionário com mesmo endereço do gestor direto",
+      "ipe_source": "Cadastro de RH (endereço) + estrutura hierárquica",
+      "wcgw_associated": [],
+      "type": "Padrão",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-RTR-001",
+      "process_code": "RTR",
+      "process_name": "Record-to-Report",
+      "red_flag": "Volume de lançamentos manuais de fim de período acima da média",
+      "metric": "Quantidade e valor de lançamentos manuais nos últimos 3 dias úteis do período vs. média do período",
+      "threshold": "Volume > 150% da média diária do mês ou valor > 5% da receita do período",
+      "ipe_source": "Log de lançamentos com data, usuário e tipo (manual vs. automático)",
+      "wcgw_associated": [
+        "RTR-010",
+        "FRA-016"
+      ],
+      "type": "Timing",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-RTR-002",
+      "process_code": "RTR",
+      "process_name": "Record-to-Report",
+      "red_flag": "Lançamentos manuais em contas incomuns para o tipo de operação",
+      "metric": "Lançamentos em contas de resultado em módulos que só deveriam gerar lançamentos automáticos",
+      "threshold": "Qualquer lançamento manual em conta de receita sem aprovação de segundo nível",
+      "ipe_source": "Log de lançamentos por conta contábil e tipo de entrada",
+      "wcgw_associated": [
+        "RTR-011",
+        "FRA-016"
+      ],
+      "type": "Padrão",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-RTR-003",
+      "process_code": "RTR",
+      "process_name": "Record-to-Report",
+      "red_flag": "Provisões que sistematicamente se revertem no período seguinte",
+      "metric": "Valor revertido no período M+1 vs. valor constituído em M, por conta de provisão",
+      "threshold": "Reversão > 50% da provisão constituída no período anterior em ≥ 3 períodos consecutivos",
+      "ipe_source": "Razão de provisões por conta + lançamentos de reversão",
+      "wcgw_associated": [
+        "RTR-014",
+        "FRA-023"
+      ],
+      "type": "Padrão",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-RTR-004",
+      "process_code": "RTR",
+      "process_name": "Record-to-Report",
+      "red_flag": "Estimativas que sistematicamente melhoram o resultado",
+      "metric": "Direção do ajuste de estimativas ao longo dos períodos (sempre favorável vs. desfavorável)",
+      "threshold": "Ajuste favorável ao resultado em > 80% dos períodos nos últimos 8 trimestres",
+      "ipe_source": "Histórico de estimativas e ajustes por conta",
+      "wcgw_associated": [
+        "RTR-014",
+        "FRA-017"
+      ],
+      "type": "Padrão",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-RTR-005",
+      "process_code": "RTR",
+      "process_name": "Record-to-Report",
+      "red_flag": "Contas com saldo relevante sem movimentação há muito tempo",
+      "metric": "Contas com saldo > threshold sem lançamento há mais de X meses",
+      "threshold": "Saldo > R$ X sem movimentação há > 6 meses",
+      "ipe_source": "Razão contábil com data do último lançamento por conta",
+      "wcgw_associated": [
+        "RTR-003"
+      ],
+      "type": "Padrão",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-RTR-006",
+      "process_code": "RTR",
+      "process_name": "Record-to-Report",
+      "red_flag": "Margem bruta melhorando enquanto concorrentes pioram",
+      "metric": "Variação de margem bruta vs. benchmark setorial",
+      "threshold": "Melhora de margem > 3 p.p. sem explicação operacional quando setor apresenta compressão",
+      "ipe_source": "DRE + dados setoriais públicos (CVM, relatórios de setor)",
+      "wcgw_associated": [
+        "FRA-027"
+      ],
+      "type": "Padrão",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-RTR-007",
+      "process_code": "RTR",
+      "process_name": "Record-to-Report",
+      "red_flag": "Lançamentos feitos por usuário incomum ou fora do horário",
+      "metric": "Usuário e timestamp de lançamentos manuais relevantes",
+      "threshold": "Lançamento > R$ X por usuário que não é do time de contabilidade ou fora do horário comercial",
+      "ipe_source": "Log de lançamentos com usuário e timestamp",
+      "wcgw_associated": [
+        "RTR-009",
+        "FRA-014"
+      ],
+      "type": "Timing",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-FA-001",
+      "process_code": "FA",
+      "process_name": "Fixed Assets",
+      "red_flag": "CIP (obra em andamento) sem transferência ao ativo final há muito tempo",
+      "metric": "Tempo em dias desde último lançamento em conta de CIP por projeto",
+      "threshold": "CIP sem movimentação há > 12 meses com saldo > R$ X",
+      "ipe_source": "Razão de contas de CIP com data do último lançamento",
+      "wcgw_associated": [
+        "FA-005"
+      ],
+      "type": "Padrão",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-FA-002",
+      "process_code": "FA",
+      "process_name": "Fixed Assets",
+      "red_flag": "Ativos totalmente depreciados com valor residual zero ainda em uso operacional",
+      "metric": "Ativos com saldo líquido = 0 mas com centro de custo ativo",
+      "threshold": "> 20% do imobilizado bruto com saldo líquido zero sem análise de extensão de vida útil",
+      "ipe_source": "Relatório de imobilizado com valor bruto, depreciação acumulada e centro de custo",
+      "wcgw_associated": [
+        "FA-016"
+      ],
+      "type": "Padrão",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-FA-003",
+      "process_code": "FA",
+      "process_name": "Fixed Assets",
+      "red_flag": "CAPEX crescendo sem correspondência em capacidade operacional ou receita",
+      "metric": "Variação % de CAPEX vs. variação % de receita ou volume produzido",
+      "threshold": "CAPEX cresce > 20% enquanto receita/volume estagnados ou caem",
+      "ipe_source": "Relatório de CAPEX + dados operacionais + DRE",
+      "wcgw_associated": [
+        "FA-001",
+        "FA-002"
+      ],
+      "type": "Padrão",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-FA-004",
+      "process_code": "FA",
+      "process_name": "Fixed Assets",
+      "red_flag": "Alienações de ativos sem ganho nem perda — preço exatamente igual ao valor contábil",
+      "metric": "Resultado de alienação (ganho/perda) por transação",
+      "threshold": "Resultado = 0 em > 30% das alienações do período",
+      "ipe_source": "Relatório de baixas e alienações com valor contábil e preço de venda",
+      "wcgw_associated": [
+        "FA-028",
+        "FA-030"
+      ],
+      "type": "Padrão",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-FA-005",
+      "process_code": "FA",
+      "process_name": "Fixed Assets",
+      "red_flag": "Despesas de manutenção com pico atípico — possível capitalização indevida invertida",
+      "metric": "Variação % da conta de manutenção e reparo vs. período anterior",
+      "threshold": "Aumento > 30% na conta de manutenção sem aumento correspondente em ativos capitalizados",
+      "ipe_source": "Razão de contas de manutenção + relatório de adições ao imobilizado",
+      "wcgw_associated": [
+        "FA-001",
+        "FA-003"
+      ],
+      "type": "Valor",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-FA-006",
+      "process_code": "FA",
+      "process_name": "Fixed Assets",
+      "red_flag": "Ativo adquirido de parte relacionada com valor discrepante do mercado",
+      "metric": "Preço pago vs. avaliação de mercado para ativo equivalente",
+      "threshold": "Diferença > 15% do valor de mercado sem avaliação independente documentada",
+      "ipe_source": "Relatório de aquisições + registro de partes relacionadas",
+      "wcgw_associated": [
+        "FA-006"
+      ],
+      "type": "Valor",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-UAM-001",
+      "process_code": "UAM",
+      "process_name": "User Access Management",
+      "red_flag": "Usuários com último login há muito tempo mas conta ativa",
+      "metric": "Diferença em dias entre data do último login e data de análise",
+      "threshold": "Sem login há > 90 dias com conta ativa e sem justificativa (conta de serviço, licença)",
+      "ipe_source": "Relatório de usuários com data do último login (AD ou ERP)",
+      "wcgw_associated": [
+        "UAM-019",
+        "UAM-013"
+      ],
+      "type": "Padrão",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-UAM-002",
+      "process_code": "UAM",
+      "process_name": "User Access Management",
+      "red_flag": "Logins fora do horário comercial em sistemas sensíveis",
+      "metric": "Timestamp de logins em sistemas financeiros (ERP, banking)",
+      "threshold": "Login em sistema financeiro antes das 6h ou após 22h ou em feriado/fim de semana",
+      "ipe_source": "Log de acesso do sistema com timestamp",
+      "wcgw_associated": [
+        "UAM-027",
+        "FRA-014"
+      ],
+      "type": "Timing",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-UAM-003",
+      "process_code": "UAM",
+      "process_name": "User Access Management",
+      "red_flag": "Logins simultâneos para o mesmo usuário",
+      "metric": "Sessões ativas simultâneas para a mesma credencial",
+      "threshold": "≥ 2 sessões simultâneas para o mesmo usuário",
+      "ipe_source": "Log de sessões do sistema",
+      "wcgw_associated": [
+        "UAM-026"
+      ],
+      "type": "Padrão",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-UAM-004",
+      "process_code": "UAM",
+      "process_name": "User Access Management",
+      "red_flag": "Acessos de ex-funcionários ativos após data de desligamento",
+      "metric": "Cruzamento de data de desligamento (RH) com data do último login no sistema",
+      "threshold": "Qualquer login após a data de desligamento",
+      "ipe_source": "Lista de desligados do período + log de acesso",
+      "wcgw_associated": [
+        "UAM-013",
+        "UAM-015"
+      ],
+      "type": "Timing",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-UAM-005",
+      "process_code": "UAM",
+      "process_name": "User Access Management",
+      "red_flag": "Usuário com perfis de módulos sem relação com função exercida",
+      "metric": "Comparação do perfil de acesso com cargo/função do usuário",
+      "threshold": "Acesso a módulo com nenhuma relação com o cargo (ex: usuário de RH com acesso a módulo bancário)",
+      "ipe_source": "Lista de usuários com perfis + organograma com funções",
+      "wcgw_associated": [
+        "UAM-009",
+        "UAM-012"
+      ],
+      "type": "Padrão",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-UAM-006",
+      "process_code": "UAM",
+      "process_name": "User Access Management",
+      "red_flag": "Volume anormal de transações por usuário específico",
+      "metric": "Quantidade de transações por usuário vs. média dos usuários com mesmo perfil",
+      "threshold": "Usuário com > 3x a média de transações dos pares sem justificativa operacional",
+      "ipe_source": "Log de transações por usuário no período",
+      "wcgw_associated": [
+        "UAM-028",
+        "FRA-007"
+      ],
+      "type": "Frequência",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    },
+    {
+      "id": "RF-UAM-007",
+      "process_code": "UAM",
+      "process_name": "User Access Management",
+      "red_flag": "Concessões de acesso sem chamado de solicitação correspondente",
+      "metric": "Acessos concedidos no período sem ticket de solicitação vinculado",
+      "threshold": "Qualquer concessão sem chamado aprovado",
+      "ipe_source": "Log de concessões de acesso + sistema de chamados",
+      "wcgw_associated": [
+        "UAM-001",
+        "UAM-007"
+      ],
+      "type": "Padrão",
+      "source_file": "context/master-lists/red-flags-por-processo.md"
+    }
+  ]
+}

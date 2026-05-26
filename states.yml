@@ -1,0 +1,85 @@
+engagement:
+  states:
+    - planejamento
+    - execução
+    - revisão_técnica
+    - comunicação
+    - monitoramento
+    - arquivado
+  description: >
+    Ciclo de vida de um trabalho de auditoria interna.
+    planejamento: escopo, riscos e programa definidos.
+    execução: fieldwork em andamento.
+    revisão_técnica: sênior/gerente revisando papéis e achados.
+    comunicação: achados comunicados à gestão.
+    monitoramento: acompanhamento da implementação dos planos de ação.
+    arquivado: engagement encerrado e documentação finalizada.
+
+área:
+  states:
+    - não_iniciado
+    - em_andamento
+    - pendente_revisão
+    - concluído
+  description: >
+    Status de execução de uma área ou processo dentro do engagement.
+    não_iniciado: planejado, sem ação ainda.
+    em_andamento: execução iniciada.
+    pendente_revisão: executor concluiu, aguarda revisor.
+    concluído: revisado e fechado.
+
+achado:
+  states:
+    - rascunho
+    - revisão_técnica
+    - aprovado
+    - comunicado
+    - resposta_recebida
+    - fechado
+  description: >
+    Ciclo de vida de um achado de auditoria interna.
+    rascunho: estrutura dos 5 Cs em elaboração.
+    revisão_técnica: achado submetido à revisão do sênior/gerente.
+    aprovado: achado validado, pronto para comunicação.
+    comunicado: achado incluído no relatório enviado à gestão.
+    resposta_recebida: gestão respondeu com plano de ação.
+    fechado: plano de ação aceito e monitoramento iniciado.
+
+plano_de_ação:
+  states:
+    - aberto
+    - em_andamento
+    - implementado
+    - verificado
+    - vencido
+  description: >
+    Status de um plano de ação da gestão em resposta a achado.
+    aberto: comprometimento recebido, implementação não iniciada.
+    em_andamento: gestão reportou ações em curso.
+    implementado: gestão reportou conclusão — pendente verificação.
+    verificado: auditoria interna confirmou implementação efetiva.
+    vencido: prazo expirado sem implementação — requer escalação.
+
+aliases:
+  não_iniciado:
+    - nao_iniciado
+    - nao iniciado
+    - não iniciado
+    - pendente
+  em_andamento:
+    - em andamento
+    - andamento
+    - wip
+  pendente_revisão:
+    - pendente_revisao
+    - pendente revisão
+    - aguardando revisão
+    - pronto para revisão
+  revisão_técnica:
+    - revisao_tecnica
+    - revisão tecnica
+    - em revisão
+  vencido:
+    - overdue
+    - atrasado
+    - prazo expirado

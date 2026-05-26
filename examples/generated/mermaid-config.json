@@ -1,0 +1,12 @@
+{
+  "theme": "default",
+  "flowchart": {
+    "htmlLabels": true,
+    "curve": "basis"
+  },
+  "themeVariables": {
+    "background": "#ffffff",
+    "primaryColor": "#dbeafe",
+    "edgeLabelBackground": "#ffffff"
+  }
+}
